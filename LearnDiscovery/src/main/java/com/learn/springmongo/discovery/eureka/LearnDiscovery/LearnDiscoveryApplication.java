@@ -11,5 +11,4 @@ public class LearnDiscoveryApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(LearnDiscoveryApplication.class, args);
 	}
-
 }
