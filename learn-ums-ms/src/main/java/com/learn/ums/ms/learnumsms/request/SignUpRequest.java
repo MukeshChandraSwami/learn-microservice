@@ -1,40 +1,31 @@
-package com.learn.ums.ms.learnumsms.model;
+package com.learn.ums.ms.learnumsms.request;
 
-public class User {
+public class SignUpRequest extends BaseRequest{
 
-	private String id;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String firstName;
 	private String lastname;
 	private String mob;
 	private String email;
+	private String password;
 	private String dateOfBirth;
 	
-	public User() {}
-	
-	public User(String id,String firstName, String lastname, String mob, String email, String dob) {
-		super();
-		this.id = id;
-		this.firstName = firstName;
-		this.lastname = lastname;
-		this.mob = mob;
-		this.email = email;
-		this.dateOfBirth = dob;
-	}
 	
 	/**
-	 * @return the id
+	 * @return the password
 	 */
-	public String getId() {
-		return id;
+	public String getPassword() {
+		return password;
 	}
-
 	/**
-	 * @param id the id to set
+	 * @param password the password to set
 	 */
-	public void setId(String id) {
-		this.id = id;
+	public void setPassword(String password) {
+		this.password = password;
 	}
-
 	/**
 	 * @return the firstName
 	 */
@@ -83,18 +74,18 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
 	/**
 	 * @return the dateOfBirth
 	 */
 	public String getDateOfBirth() {
 		return dateOfBirth;
 	}
-
 	/**
 	 * @param dateOfBirth the dateOfBirth to set
 	 */
 	public void setDateOfBirth(String dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
+	
+	
 }

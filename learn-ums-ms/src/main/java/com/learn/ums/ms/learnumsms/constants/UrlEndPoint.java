@@ -1,6 +1,6 @@
 package com.learn.ums.ms.learnumsms.constants;
 
-public interface Urls {
+public interface UrlEndPoint {
 
 	String GET = "get";
 	String POST = "post";
