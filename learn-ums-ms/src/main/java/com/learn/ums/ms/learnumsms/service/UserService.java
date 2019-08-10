@@ -3,6 +3,7 @@ package com.learn.ums.ms.learnumsms.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.learn.ums.ms.learnumsms.constants.FailResponseCode;
@@ -12,6 +13,7 @@ import com.learn.ums.ms.learnumsms.constants.SuccessResponseMsg;
 import com.learn.ums.ms.learnumsms.entity.UserEO;
 import com.learn.ums.ms.learnumsms.model.User;
 import com.learn.ums.ms.learnumsms.repo.UserRepo;
+import com.learn.ums.ms.learnumsms.request.LogInRequest;
 import com.learn.ums.ms.learnumsms.request.SignUpRequest;
 import com.learn.ums.ms.learnumsms.response.Response;
 import com.learn.ums.ms.learnumsms.response.UserResponse;
@@ -23,6 +25,9 @@ public class UserService {
 
 	@Autowired
 	private UserRepo userRepo;
+	
+	@Autowired
+	private BCryptPasswordEncoder passEncoder;
 
 	public Response getUserById(String id) {
 
@@ -31,8 +36,8 @@ public class UserService {
 		Optional<UserEO> userEO = userRepo.getUserById(id);
 		
 		if(userEO.isPresent()) {
-			OrikaGlobalMapper mapper = new OrikaGlobalMapper(userEO.get(), User.class);
-			User user = (User) mapper.map();
+			OrikaGlobalMapper<UserEO,User> mapper = new OrikaGlobalMapper<>(userEO.get(), User.class);
+			User user = mapper.map();
 			
 			response.setSuccess(true);
 			response.setResponseCode(SuccessResponseCode.USER_FOUND);
@@ -55,6 +60,7 @@ public class UserService {
 			UserEO userEo = (UserEO) mapper.map();
 			userEo.setDob(DateUtils.convertStringToDate(signUpRequest.getDateOfBirth(), "dd/MM/yyyy").getTime());
 			if (userEo != null) {
+				userEo.setPassword(passEncoder.encode(signUpRequest.getPassword()));
 				userRepo.creatUser(userEo);
 			}
 
@@ -72,5 +78,11 @@ public class UserService {
 		}
 
 		return response;
+	}
+
+	public Response logIn(LogInRequest logInRequest) {
+		
+		
+		return null;
 	}
 }
