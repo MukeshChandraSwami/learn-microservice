@@ -1,6 +1,6 @@
 package com.learn.ums.ms.learnumsms.model;
 
-public class User {
+public class User extends Common{
 
 	private String id;
 	private String firstName;
@@ -8,18 +8,6 @@ public class User {
 	private String mob;
 	private String email;
 	private String dateOfBirth;
-	
-	public User() {}
-	
-	public User(String id,String firstName, String lastname, String mob, String email, String dob) {
-		super();
-		this.id = id;
-		this.firstName = firstName;
-		this.lastname = lastname;
-		this.mob = mob;
-		this.email = email;
-		this.dateOfBirth = dob;
-	}
 	
 	/**
 	 * @return the id

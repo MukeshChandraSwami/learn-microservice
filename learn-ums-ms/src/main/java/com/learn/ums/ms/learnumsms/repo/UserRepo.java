@@ -19,7 +19,7 @@ public class UserRepo {
 
 	public void createUsers(List<UserEO> users) {
 		MongoDatabase mongoDb = MongoConfig.getMongoInstance().getMongoDatabase();
-		MongoCollection col = mongoDb.getCollection(DBCollectionConsts.USER.getCollection()).withDocumentClass(UserEO.class);
+		MongoCollection<UserEO> col = mongoDb.getCollection(DBCollectionConsts.USER.getCollection()).withDocumentClass(UserEO.class);
 		col.insertMany(users);
 	}
 	
@@ -33,8 +33,8 @@ public class UserRepo {
 	public Optional<UserEO> getUserById(String id) {
 		
 		MongoDatabase mongoDb = MongoConfig.getMongoInstance().getMongoDatabase();
-		MongoCollection col = mongoDb.getCollection(DBCollectionConsts.USER.getCollection()).withDocumentClass(UserEO.class);
-		UserEO userEo = (UserEO)col.find(Filters.eq(DBQueryAttributes.ID.getParam(),id)).first();
+		MongoCollection<UserEO> col = mongoDb.getCollection(DBCollectionConsts.USER.getCollection()).withDocumentClass(UserEO.class);
+		UserEO userEo = col.find(Filters.eq(DBQueryAttributes.ID.getParam(),id)).first();
 		
 		if(userEo != null) {
 			return Optional.of(userEo);

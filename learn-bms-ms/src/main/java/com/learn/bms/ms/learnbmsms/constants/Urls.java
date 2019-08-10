@@ -6,5 +6,6 @@ public interface Urls {
 	String POST = "post";
 	String UPDATE = "update";
 	String PURGE = "purge";
-	String USER = "book";
+	String BOOK = "book";
+	String ADD_BOOK = "addBook";
 }
