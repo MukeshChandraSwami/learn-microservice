@@ -1,5 +1,9 @@
 package com.learn.ums.ms.learnumsms.request;
 
+import java.util.Set;
+
+import com.learn.ums.ms.learnumsms.constants.UserRoles;
+
 public class SignUpRequest extends BaseRequest{
 
 	/**
@@ -12,8 +16,20 @@ public class SignUpRequest extends BaseRequest{
 	private String email;
 	private String password;
 	private String dateOfBirth;
+	private Set<UserRoles> roles;
 	
-	
+	/**
+	 * @return the roles
+	 */
+	public Set<UserRoles> getRoles() {
+		return roles;
+	}
+	/**
+	 * @param roles the roles to set
+	 */
+	public void setRoles(Set<UserRoles> roles) {
+		this.roles = roles;
+	}
 	/**
 	 * @return the password
 	 */

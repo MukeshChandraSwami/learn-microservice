@@ -3,6 +3,9 @@ package com.learn.ums.ms.learnumsms.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,39 +20,33 @@ import com.learn.ums.ms.learnumsms.request.LogInRequest;
 import com.learn.ums.ms.learnumsms.request.SignUpRequest;
 import com.learn.ums.ms.learnumsms.response.Response;
 import com.learn.ums.ms.learnumsms.response.UserResponse;
+import com.learn.ums.ms.learnumsms.service.impl.UserDetailsImpl;
 import com.learn.ums.ms.learnumsms.utils.DateUtils;
 import com.learn.ums.ms.learnumsms.utils.OrikaGlobalMapper;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
 	@Autowired
 	private UserRepo userRepo;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder passEncoder;
 
 	public Response getUserById(String id) {
 
-		UserResponse response = new UserResponse();
-		
 		Optional<UserEO> userEO = userRepo.getUserById(id);
-		
-		if(userEO.isPresent()) {
-			OrikaGlobalMapper<UserEO,User> mapper = new OrikaGlobalMapper<>(userEO.get(), User.class);
-			User user = mapper.map();
-			
-			response.setSuccess(true);
-			response.setResponseCode(SuccessResponseCode.USER_FOUND);
-			response.setResponseMsg(SuccessResponseMsg.USER_FOUND);
-			user.setDateOfBirth(DateUtils.convertMilisToString(userEO.get().getDob(), "dd/MM/yyyy"));
-			response.setUser(user);
-		}else {
-			response.setResponseCode(FailResponseCode.USER_NOT_FOUND);
-			response.setResponseMsg(FailResponseMsg.USER_NOT_FOUND);
-		}
-		
-		return response;
+		return getUserResponse(userEO);
+	}
+
+	public Response getUserByEmail(String email) {
+		Optional<UserEO> userEO = userRepo.getUserByEmail(email);
+		return getUserResponse(userEO);
+	}
+
+	public Response getUserByMobile(String mob) {
+		Optional<UserEO> userEO = userRepo.getUserByMobile(mob);
+		return getUserResponse(userEO);
 	}
 
 	public Response craeteUser(SignUpRequest signUpRequest) {
@@ -81,8 +78,58 @@ public class UserService {
 	}
 
 	public Response logIn(LogInRequest logInRequest) {
+
+		Response response = new UserResponse();
 		
+		Optional<UserEO> opUserEo = Optional.empty();
+		if(logInRequest.getEmail() != null && !logInRequest.getEmail().isEmpty()) {
+			opUserEo = userRepo.getUserByEmail(logInRequest.getEmail());
+		}else {
+			opUserEo = userRepo.getUserByMobile(logInRequest.getMob());
+		}
 		
-		return null;
+		if(opUserEo.isPresent()) {
+			
+			UserEO userEO = opUserEo.get();
+			boolean success = passEncoder.matches(logInRequest.getPassword(), userEO.getPassword());
+			
+			if(success) {
+				response = getUserResponse(opUserEo);
+				response.setResponseCode(SuccessResponseCode.LOGIN_SUCCESS);
+				response.setResponseMsg(SuccessResponseMsg.LOGIN_SUCCESS);
+			}else {
+				response.setResponseCode(FailResponseCode.LOGIN_FAIL);
+				response.setResponseMsg(FailResponseMsg.LOGIN_SUCCESS);
+			}
+		}
+		
+		return response;
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+		return new UserDetailsImpl(userRepo.getUserByEmail(username).get());
+	}
+
+	private Response getUserResponse(Optional<UserEO> opUserEO) {
+
+		UserResponse response = new UserResponse();
+
+		if (opUserEO.isPresent()) {
+			OrikaGlobalMapper<UserEO, User> mapper = new OrikaGlobalMapper<>(opUserEO.get(), User.class);
+			User user = mapper.map();
+
+			response.setSuccess(true);
+			response.setResponseCode(SuccessResponseCode.USER_FOUND);
+			response.setResponseMsg(SuccessResponseMsg.USER_FOUND);
+			user.setDateOfBirth(DateUtils.convertMilisToString(opUserEO.get().getDob(), "dd/MM/yyyy"));
+			response.setUser(user);
+		} else {
+			response.setResponseCode(FailResponseCode.USER_NOT_FOUND);
+			response.setResponseMsg(FailResponseMsg.USER_NOT_FOUND);
+		}
+
+		return response;
 	}
 }

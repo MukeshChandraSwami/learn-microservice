@@ -1,5 +1,9 @@
 package com.learn.ums.ms.learnumsms.entity;
 
+import java.util.Set;
+
+import com.learn.ums.ms.learnumsms.constants.UserRoles;
+
 public class UserEO extends BaseEO{
 
 	/**
@@ -12,7 +16,60 @@ public class UserEO extends BaseEO{
 	private String password;
 	private String email;
 	private long dob;
+	private Set<UserRoles> roles;
+	private boolean locked;
+	private boolean expired;
+	private boolean disabled;
 
+	
+	/**
+	 * @return the roles
+	 */
+	public Set<UserRoles> getRoles() {
+		return roles;
+	}
+	/**
+	 * @param roles the roles to set
+	 */
+	public void setRoles(Set<UserRoles> roles) {
+		this.roles = roles;
+	}
+	/**
+	 * @return the locked
+	 */
+	public boolean isLocked() {
+		return locked;
+	}
+	/**
+	 * @param locked the locked to set
+	 */
+	public void setLocked(boolean locked) {
+		this.locked = locked;
+	}
+	/**
+	 * @return the expired
+	 */
+	public boolean isExpired() {
+		return expired;
+	}
+	/**
+	 * @param expired the expired to set
+	 */
+	public void setExpired(boolean expired) {
+		this.expired = expired;
+	}
+	/**
+	 * @return the disabled
+	 */
+	public boolean isDisabled() {
+		return disabled;
+	}
+	/**
+	 * @param disabled the disabled to set
+	 */
+	public void setDisabled(boolean disabled) {
+		this.disabled = disabled;
+	}
 	/**
 	 * @return the password
 	 */

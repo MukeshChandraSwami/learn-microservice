@@ -5,5 +5,7 @@ public interface FailResponseMsg {
 	String SIGNED_UP = "Sign up failed due to some internal issue.";
 	
 	String USER_NOT_FOUND = "User is not registered.";
+
+	String LOGIN_SUCCESS = "Email/Mobile OR password is not correct.";
 	
 }

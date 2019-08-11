@@ -29,12 +29,36 @@ public class UserRepo {
 		users.add(userEo);
 		createUsers(users);
 	}
-
+	
 	public Optional<UserEO> getUserById(String id) {
 		
 		MongoDatabase mongoDb = MongoConfig.getMongoInstance().getMongoDatabase();
 		MongoCollection<UserEO> col = mongoDb.getCollection(DBCollectionConsts.USER.getCollection()).withDocumentClass(UserEO.class);
 		UserEO userEo = col.find(Filters.eq(DBQueryAttributes.ID.getParam(),id)).first();
+		
+		if(userEo != null) {
+			return Optional.of(userEo);
+		}
+		
+		return Optional.empty();
+	}
+
+	public Optional<UserEO> getUserByEmail(String email) {
+		MongoDatabase mongoDb = MongoConfig.getMongoInstance().getMongoDatabase();
+		MongoCollection<UserEO> col = mongoDb.getCollection(DBCollectionConsts.USER.getCollection()).withDocumentClass(UserEO.class);
+		UserEO userEo = col.find(Filters.eq(DBQueryAttributes.EMAIL.getParam(),email)).first();
+		
+		if(userEo != null) {
+			return Optional.of(userEo);
+		}
+		
+		return Optional.empty();
+	}
+
+	public Optional<UserEO> getUserByMobile(String mob) {
+		MongoDatabase mongoDb = MongoConfig.getMongoInstance().getMongoDatabase();
+		MongoCollection<UserEO> col = mongoDb.getCollection(DBCollectionConsts.USER.getCollection()).withDocumentClass(UserEO.class);
+		UserEO userEo = col.find(Filters.eq(DBQueryAttributes.MOB.getParam(),mob)).first();
 		
 		if(userEo != null) {
 			return Optional.of(userEo);
