@@ -3,6 +3,7 @@ package com.learn.ums.ms.learnumsms.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -32,6 +33,9 @@ public class UserService implements UserDetailsService {
 
 	@Autowired
 	private BCryptPasswordEncoder passEncoder;
+	
+	@Autowired
+	private Environment env;
 
 	public Response getUserById(String id) {
 
@@ -131,5 +135,9 @@ public class UserService implements UserDetailsService {
 		}
 
 		return response;
+	}
+
+	public String checkStatusOfUserService() {
+		return "Running : " + env.getProperty("server.port");
 	}
 }

@@ -43,4 +43,9 @@ public class UserController {
 		
 		return "author accessed.";
 	}
+	
+	@GetMapping("/" + UrlEndPoint.STATUS)
+	public String checkStatusOfUserService() {
+		return userService.checkStatusOfUserService();
+	}
 }

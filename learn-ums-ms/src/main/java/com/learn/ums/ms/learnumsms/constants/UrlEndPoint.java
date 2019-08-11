@@ -14,4 +14,5 @@ public interface UrlEndPoint {
 	String BY_ID = "by-id";
 	String BY_MOB = "by-mob";
 	String BY_EMAIL = "by-email";
+	String STATUS = "status";
 }
